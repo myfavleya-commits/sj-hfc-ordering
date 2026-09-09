@@ -23,6 +23,9 @@ Node.js 20+, npm, and PostgreSQL for production persistence.
 ```bash
 npm install
 copy .env.example .env.local
+npm run db:generate
+npm run db:migrate
+npm run db:seed
 npm run dev
 ```
 
@@ -55,7 +58,10 @@ npm run lint
 npm run typecheck
 npm run test
 npm run build
+npm run test:e2e
 ```
+
+For local PostgreSQL without a hosted provider, run `docker compose up -d postgres` first. E2E tests expect a seeded database and a running local app; install browsers once with `npx playwright install chromium`.
 
 ## Vercel deployment
 

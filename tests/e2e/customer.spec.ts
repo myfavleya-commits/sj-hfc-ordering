@@ -1,0 +1,2 @@
+import { test, expect } from "@playwright/test";
+test("customer can browse menu and cart", async ({ page }) => { await page.goto("/"); await expect(page.getByText("SJ H.F.C").first()).toBeVisible(); await page.getByRole("link", { name: /menu/i }).first().click(); await expect(page).toHaveURL(/products/); await expect(page.getByText(/SJ H\.F\.C menu/i)).toBeVisible(); await page.getByRole("link", { name: /cart/i }).click(); await expect(page).toHaveURL(/cart/); });

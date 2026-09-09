@@ -1,0 +1,1 @@
+import Link from "next/link";export default function NotFound(){return <main className="container"><div className="success"><h1>Page not found</h1><p className="muted">This SJ H.F.C page does not exist.</p><Link className="btn btn-primary" style={{marginTop:20}} href="/">Back home</Link></div></main>}

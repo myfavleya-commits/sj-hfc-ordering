@@ -1,0 +1,1 @@
+export default function Loading(){return <main className="container"><div className="panel" style={{marginTop:50,textAlign:"center",padding:70}}><h2>Loading SJ H.F.C...</h2><p className="muted">Preparing the menu for you.</p></div></main>}
