@@ -33,6 +33,8 @@ model User {
 model Category {
   id String @id @default(cuid())
   name String
+  nameUrdu String?
+  nameEnglish String?
   slug String @unique
   description String?
   image String?
@@ -56,6 +58,7 @@ model Product {
   stock Int @default(0)
   isActive Boolean @default(true)
   isFeatured Boolean @default(false)
+  isDemo Boolean @default(false)
   categoryId String
   category Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
   images ProductImage[]

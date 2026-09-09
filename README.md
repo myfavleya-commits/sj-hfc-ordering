@@ -2,6 +2,8 @@
 
 A full-stack, mobile-first storefront for businesses that take complete orders through WhatsApp. Catalog, settings, users, orders, inventory, and order status are persisted in PostgreSQL through Prisma. Customers keep only temporary cart state in the browser, while checkout is revalidated and committed server-side.
 
+The initial menu structure is based on the SJ H.F.C visiting-card reference: `شوارما` (Shawarma), `برگر` (Burger), `پیزا` (Pizza), `سینڈوچ` (Sandwich), `ملک شیک` (Milkshake), `جوس` (Juice), and `فرائز` (Fries). Urdu labels are preserved in the database alongside English transliterations. The card does not provide a verified digital product/pricing dataset in this repository, so no generic sample item is presented as a real SJ H.F.C menu item; the seeded sample records are inactive and marked as demo-only for admin replacement.
+
 ## Features
 
 - Responsive premium storefront, category browsing, search, sorting, product detail pages, and related products.
