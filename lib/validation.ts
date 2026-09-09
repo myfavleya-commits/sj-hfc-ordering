@@ -1,0 +1,2 @@
+import { z } from "zod";
+export const checkoutSchema=z.object({customerName:z.string().min(2,"Please enter your full name"),phone:z.string().regex(/^(\+?92|0)3\d{9}$/,"Enter a valid Pakistani mobile number"),address:z.string().min(5,"Please enter your delivery address"),city:z.string().min(2,"Please enter your city"),landmark:z.string().optional(),notes:z.string().max(500,"Keep notes under 500 characters").optional()});

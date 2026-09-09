@@ -1,0 +1,5 @@
+import { CustomerOrder } from "../types";
+import { money, settings } from "../data";
+export function generateOrderWhatsAppMessage(order:CustomerOrder){const items=order.items.map((i,n)=>`${n+1}. ${i.name}\n   Qty: ${i.quantity}\n   ${money(i.price)} x ${i.quantity} = ${money(i.price*i.quantity)}`).join("\n\n");return `Hello ${settings.businessName} 👋\n\nI'd like to place an order.\n\nOrder: ${order.orderNumber}\n\nItems:\n${items}\n\nSubtotal: ${money(order.subtotal)}\nDelivery: ${money(order.deliveryFee)}\nTOTAL: ${money(order.total)}\n\nCustomer:\n${order.customerName}\n\nPhone:\n${order.phone}\n\nDelivery Address:\n${order.address}, ${order.city}${order.landmark?` (${order.landmark})`:""}\n\nNotes:\n${order.notes || "None"}\n\nThank you!`}
+export function generateWhatsAppOrderUrl(phone:string,message:string){return `https://wa.me/${phone.replace(/\D/g,"")}?text=${encodeURIComponent(message)}`}
+export function createOrderNumber(){const date=new Date().toISOString().slice(0,10).replaceAll("-","");return `#NM-${date}-${Math.floor(1000+Math.random()*9000)}`}
