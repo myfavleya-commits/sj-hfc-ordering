@@ -130,9 +130,11 @@ model OrderItem {
 
 model BusinessSettings {
   id String @id @default("default")
-  businessName String @default("NOVA MART")
+  businessName String @default("SJ H.F.C")
   logo String?
   whatsappNumber String
+  contactNumbers String[] @default([])
+  description String?
   currency String @default("Rs.")
   deliveryFee Int @default(250)
   minimumOrder Int @default(0)
@@ -141,5 +143,6 @@ model BusinessSettings {
   email String?
   announcement String?
   primaryColor String?
+  socialLinks Json?
   updatedAt DateTime @updatedAt
 }

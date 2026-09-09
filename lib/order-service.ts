@@ -5,7 +5,7 @@ import { prisma } from "./prisma";
 
 export const orderInputSchema = z.object({ customerName: z.string().trim().min(2).max(100), phone: z.string().trim().regex(/^(\+?92|0)3\d{9}$/), address: z.string().trim().min(5).max(300), city: z.string().trim().min(2).max(80), landmark: z.string().trim().max(120).optional(), notes: z.string().trim().max(500).optional(), items: z.array(z.object({ productId: z.string().min(1), variantId: z.string().min(1).optional(), quantity: z.number().int().min(1).max(99) })).min(1).max(50), idempotencyKey: z.string().min(16).max(100).optional() });
 export type OrderInput = z.infer<typeof orderInputSchema>;
-export function makeOrderNumber() { const date = new Date().toISOString().slice(0, 10).replaceAll("-", ""); return `NM-${date}-${randomInt(1000, 10000)}`; }
+export function makeOrderNumber() { const date = new Date().toISOString().slice(0, 10).replaceAll("-", ""); return `SJ-${date}-${randomInt(1000, 10000)}`; }
 
 export async function createOrder(input: OrderInput, client: PrismaClient = prisma) {
   const parsed = orderInputSchema.parse(input);

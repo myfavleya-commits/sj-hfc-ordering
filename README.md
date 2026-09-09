@@ -1,4 +1,4 @@
-# NOVA MART WhatsApp Commerce
+# SJ H.F.C WhatsApp Commerce
 
 A full-stack, mobile-first storefront for businesses that take complete orders through WhatsApp. Catalog, settings, users, orders, inventory, and order status are persisted in PostgreSQL through Prisma. Customers keep only temporary cart state in the browser, while checkout is revalidated and committed server-side.
 
@@ -26,7 +26,7 @@ npm run dev
 
 The application requires PostgreSQL for the storefront and admin data APIs. The guest cart is the only browser-persisted state.
 
-Run `npm run db:seed` to create the development admin. It uses `DEMO_ADMIN_PASSWORD`; if omitted it defaults to `Admin123!`. Change it before production and never expose it in a public UI.
+Run `npm run db:seed` to create the development admin at `admin@sjhfc.demo`. It uses `DEMO_ADMIN_PASSWORD`; if omitted it defaults to `Admin123!`. Change it before production and never expose it in a public UI.
 
 ## Environment variables
 
