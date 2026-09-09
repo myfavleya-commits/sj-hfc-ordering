@@ -1,14 +1,15 @@
 # NOVA MART WhatsApp Commerce
 
-A production-minded, mobile-first storefront for businesses that take complete orders through WhatsApp. Customers browse a real catalog, persist a cart, validate delivery details, create an order, and open an official `wa.me` click-to-chat URL. The project includes a Prisma/PostgreSQL schema for moving persistence from the demo browser layer to a production repository.
+A full-stack, mobile-first storefront for businesses that take complete orders through WhatsApp. Catalog, settings, users, orders, inventory, and order status are persisted in PostgreSQL through Prisma. Customers keep only temporary cart state in the browser, while checkout is revalidated and committed server-side.
 
 ## Features
 
 - Responsive premium storefront, category browsing, search, sorting, product detail pages, and related products.
 - Persistent guest cart with server-validated checkout shape and safe WhatsApp URL generation.
 - Human-readable order numbers and reusable message generation in `lib/whatsapp/order-message.ts`.
-- Protected demo admin area for overview, order operations, catalog visibility, and business settings.
-- Prisma schema for users, categories, products, variants, order snapshots, and business settings.
+- Auth.js credentials authentication with server-side role checks and protected admin routes.
+- Admin order status management, product/category creation, catalog visibility, and business settings.
+- Prisma schema and migration for users, categories, products, variants, order snapshots, inventory, and business settings.
 - TypeScript strict mode, Vitest utility tests, environment example, and Vercel-compatible Next.js setup.
 
 ## Requirements
@@ -23,26 +24,27 @@ copy .env.example .env.local
 npm run dev
 ```
 
-The storefront runs immediately with the included demo catalog. The current demo checkout persists orders in the browser so the experience can be evaluated without a database. The Prisma schema is ready for connecting API/server actions to PostgreSQL.
+The application requires PostgreSQL for the storefront and admin data APIs. The guest cart is the only browser-persisted state.
 
-Demo admin login: `admin@novamart.demo` / `Admin123!`. This is for development only and must be replaced with hashed-password authentication before production.
+Run `npm run db:seed` to create the development admin. It uses `DEMO_ADMIN_PASSWORD`; if omitted it defaults to `Admin123!`. Change it before production and never expose it in a public UI.
 
 ## Environment variables
 
 - `DATABASE_URL`: PostgreSQL connection string used by Prisma.
 - `AUTH_SECRET`: secret for the production Auth.js/session implementation.
 - `NEXT_PUBLIC_APP_URL`: canonical site URL for metadata and deployment.
-- `WHATSAPP_BUSINESS_NUMBER`: digits-only international business number, for example `923001234567`.
+- `WHATSAPP_BUSINESS_NUMBER`: seed fallback digits-only international business number. Runtime WhatsApp configuration is read from `BusinessSettings`.
+- `DEMO_ADMIN_PASSWORD`: optional password used only by the development seed.
 
-## Database and production hardening
+## Database setup
 
 ```bash
-npx prisma generate
-npx prisma migrate dev --name init
-npx prisma migrate deploy
+npm run db:generate
+npm run db:migrate
+npm run db:seed
 ```
 
-Before production, replace the demo browser order adapter with Prisma transactions that re-read product price/stock on the server, create `OrderItem` snapshots, enforce idempotency, and decrement stock atomically. Add Auth.js or an equivalent secure session provider for the `/admin` boundary and store only password hashes. These boundaries are intentionally isolated so the demo can run without credentials while the database contract is already defined.
+Order creation uses a serializable Prisma transaction. It re-reads active products and variants, validates current stock and prices, calculates totals from database values, creates snapshot order items, and decrements stock. Stock is reserved at order creation and is not restored automatically on cancellation.
 
 ## Verification
 
@@ -71,4 +73,4 @@ No real credentials, database URLs, or secrets belong in this repository. Use `.
 
 ## Architecture
 
-The single-store demo centralizes settings in `lib/data.ts`, keeps cart state in `components/cart-provider.tsx`, and isolates WhatsApp formatting in `lib/whatsapp/order-message.ts`. The Prisma model uses product and variant snapshots in order items so historical orders remain correct after catalog edits. This gives a clean path to multi-tenant expansion by adding `storeId` to business-owned models and scoping repositories by tenant.
+The guest cart remains in `components/cart-provider.tsx`. `lib/catalog.ts` and the API routes read the PostgreSQL catalog. `lib/order-service.ts` owns server-side validation, transactional pricing, inventory, idempotency, and order snapshots. `lib/whatsapp/order-message.ts` only formats a server-created order. Auth.js credentials are implemented in `auth.ts`, with edge-safe route authorization in `auth.config.ts`. The Prisma model uses product and variant snapshots in order items so historical orders remain correct after catalog edits.

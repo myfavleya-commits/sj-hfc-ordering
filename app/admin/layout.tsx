@@ -1,2 +1,2 @@
-"use client";import { useEffect } from "react";import { useRouter } from "next/navigation";import { AdminShell } from "../../components/admin-shell";
-export default function AdminLayout({children}:{children:React.ReactNode}){const router=useRouter();useEffect(()=>{if(!sessionStorage.getItem("nova-admin"))router.replace("/admin/login")},[router]);return children}
+import { auth } from "../../auth"; import { redirect } from "next/navigation";
+export default async function AdminLayout({children}:{children:React.ReactNode}){const session=await auth();if(!session?.user)redirect("/admin/login");return children}
