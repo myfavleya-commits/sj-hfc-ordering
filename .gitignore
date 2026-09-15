@@ -9,3 +9,6 @@ coverage
 prisma/dev.db
 test-results
 playwright-report
+
+.vercel
+.env*
