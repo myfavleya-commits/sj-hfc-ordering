@@ -2,7 +2,7 @@
 
 A full-stack, mobile-first storefront for businesses that take complete orders through WhatsApp. Catalog, settings, users, orders, inventory, and order status are persisted in PostgreSQL through Prisma. Customers keep only temporary cart state in the browser, while checkout is revalidated and committed server-side.
 
-The initial menu structure is based on the SJ H.F.C visiting-card reference: `شوارما` (Shawarma), `برگر` (Burger), `پیزا` (Pizza), `سینڈوچ` (Sandwich), `ملک شیک` (Milkshake), `جوس` (Juice), and `فرائز` (Fries). Urdu labels are preserved in the database alongside English transliterations. The card does not provide a verified digital product/pricing dataset in this repository, so no generic sample item is presented as a real SJ H.F.C menu item; the seeded sample records are inactive and marked as demo-only for admin replacement.
+The current menu structure includes `شوارما` (Shawarma), `برگر` (Burger), `پیزا` (Pizza), `سینڈوچ` (Sandwich), `ملک شیک` (Milkshake), `جوس` (Juice), and `فرائز` (Fries). Urdu labels are preserved alongside English transliterations. Products and prices are managed from the protected Admin area so the storefront only sells items that the business has published.
 
 ## Features
 
@@ -65,11 +65,12 @@ For local PostgreSQL without a hosted provider, run `docker compose up -d postgr
 
 ## Vercel deployment
 
-1. Push this repository to GitHub, for example `whatsapp-ordering-store`.
+1. Push this repository to GitHub.
 2. Import the repository into Vercel using the Next.js preset.
-3. Add `DATABASE_URL`, `AUTH_SECRET`, `NEXT_PUBLIC_APP_URL`, and `WHATSAPP_BUSINESS_NUMBER` to Production environment variables.
-4. Run `npx prisma migrate deploy` against the production PostgreSQL database, then deploy.
-5. Verify product pages, cart, checkout validation, WhatsApp URL, and admin protection on the production domain.
+3. Add `DATABASE_URL`, `AUTH_SECRET`, `NEXT_PUBLIC_APP_URL`, `WHATSAPP_BUSINESS_NUMBER`, and a strong `DEMO_ADMIN_PASSWORD` to Vercel environment variables. Never upload `.env` or `.env.local`.
+4. Run `npx prisma migrate deploy` against the production PostgreSQL database before the first live order.
+5. Run `npm run db:seed` once against the production database to create categories, settings, and the admin account, then change the seeded password.
+6. Verify product pages, cart, checkout validation, WhatsApp URL, and admin protection on the production domain.
 
 GitHub commands:
 
