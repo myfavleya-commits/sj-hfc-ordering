@@ -1,7 +1,7 @@
 import { Product } from "./types";
 import { products as fallbackProducts } from "./data";
 type DatabaseProduct = Product & { category: { name: string; slug: string }; images: { url: string; alt: string | null }[] };
-export function normalizeProduct(product: DatabaseProduct): Product { return { ...product, category: product.category.slug, image: product.images[0]?.url || "", rating: 5, reviews: 0, variants: product.variants }; }
+export function normalizeProduct(product: DatabaseProduct): Product { return { ...product, category: product.category.slug, image: product.images?.[0]?.url || "", rating: product.rating || 5, reviews: product.reviews || 0, variants: product.variants || [] }; }
 export async function fetchProducts(query = "") {
   try {
     const response = await fetch(`/api/products${query ? `?${query}` : ""}`);
